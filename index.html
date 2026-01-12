@@ -6,65 +6,112 @@
   <title>Match Types Converter (Google Ads)</title>
   <style>
     :root{
-      --bg:#0b0d10;
-      --card:#12151b;
-      --card2:#0f1318;
-      --text:#e8eef6;
-      --muted:#9aa7b6;
-      --line:#243042;
-      --accent:#6aa6ff;
-      --accent2:#7cf0c6;
-      --danger:#ff6a6a;
-      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --bg:#0c0f14;
+      --panel:#111723;
+      --panel2:#0e1420;
+      --text:#e9eef7;
+      --muted:#a3afbf;
+      --line:#263245;
+      --shadow: 0 12px 34px rgba(0,0,0,.45);
       --radius: 16px;
+
+      --btn:#171f2d;
+      --btnHover:#1b2637;
+
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
     }
+
+    /* Light theme overrides */
+    [data-theme="light"]{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:#fbfcff;
+      --text:#111827;
+      --muted:#5b6777;
+      --line:#dde3ec;
+      --shadow: 0 10px 24px rgba(15, 23, 42, .08);
+
+      --btn:#f1f4f8;
+      --btnHover:#e7ecf3;
+    }
+
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:var(--sans);
-      background: radial-gradient(1200px 800px at 20% -10%, rgba(106,166,255,.18), transparent 55%),
-                  radial-gradient(900px 700px at 100% 10%, rgba(124,240,198,.14), transparent 45%),
-                  var(--bg);
+      background: var(--bg);
       color:var(--text);
     }
+
     .wrap{
       max-width:1100px;
       margin:0 auto;
       padding:28px 16px 40px;
     }
+
     .top{
       display:flex;
       justify-content:space-between;
       gap:16px;
       align-items:flex-start;
-      margin-bottom:18px;
+      margin-bottom:16px;
     }
+
     h1{
       font-size:22px;
       margin:0;
       letter-spacing:.2px;
     }
+
     .sub{
       margin-top:8px;
       color:var(--muted);
       font-size:13px;
       line-height:1.4;
-      max-width:720px;
+      max-width:760px;
     }
-    .pill{
-      display:inline-flex;
+
+    /* Theme toggle */
+    .toggle{
+      display:flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
+      user-select:none;
       padding:10px 12px;
       border:1px solid var(--line);
       border-radius:999px;
-      background:rgba(18,21,27,.55);
-      color:var(--muted);
+      background: var(--panel2);
+      box-shadow: var(--shadow);
+    }
+    .toggle span{
       font-size:12px;
+      color:var(--muted);
       white-space:nowrap;
     }
+    .switch{
+      position:relative;
+      width:44px;
+      height:24px;
+      border-radius:999px;
+      background: var(--btn);
+      border:1px solid var(--line);
+      cursor:pointer;
+    }
+    .knob{
+      position:absolute;
+      top:2px;
+      left:2px;
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      background: var(--text);
+      transition: transform .18s ease;
+      opacity:.9;
+    }
+    [data-theme="light"] .knob{ transform: translateX(20px); }
+    [data-theme="light"] .switch{ background: var(--btnHover); }
+
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -73,84 +120,28 @@
     @media (max-width: 920px){
       .grid{grid-template-columns:1fr}
       .top{flex-direction:column}
-      .pill{width:fit-content}
+      .toggle{width:fit-content}
     }
+
     .card{
-      background: linear-gradient(180deg, rgba(18,21,27,.92), rgba(15,19,24,.92));
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
       border:1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .cardHead{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:14px 14px 10px;
-      border-bottom:1px solid rgba(36,48,66,.6);
-    }
-    .label{
-      font-size:12px;
-      color:var(--muted);
-      letter-spacing:.35px;
-      text-transform:uppercase;
-    }
-    .tools{
-      display:flex;
-      gap:8px;
-      align-items:center;
-    }
-    button{
-      cursor:pointer;
-      border:1px solid var(--line);
-      background:rgba(18,21,27,.65);
-      color:var(--text);
-      padding:8px 10px;
-      border-radius:12px;
-      font-size:13px;
-    }
-    button:hover{border-color: rgba(106,166,255,.65)}
-    button:active{transform: translateY(1px)}
-    .btnAccent{
-      border-color: rgba(106,166,255,.55);
-      background: rgba(106,166,255,.15);
-    }
-    .btnDanger{
-      border-color: rgba(255,106,106,.55);
-      background: rgba(255,106,106,.14);
-    }
-    textarea{
-      width:100%;
-      min-height:340px;
-      resize:vertical;
-      border:none;
-      outline:none;
-      padding:14px;
-      background:transparent;
-      color:var(--text);
-      font-family: var(--mono);
-      font-size:13px;
-      line-height:1.5;
-    }
-    .foot{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      align-items:center;
-      padding:10px 14px 14px;
-      border-top:1px solid rgba(36,48,66,.6);
-      color:var(--muted);
-      font-size:12px;
-    }
+
     .selectors{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       align-items:center;
-      padding:10px 14px;
-      border-top:1px solid rgba(36,48,66,.6);
-      background: rgba(15,19,24,.35);
+      padding:12px 14px;
+      border-bottom:1px solid rgba(0,0,0,0);
+      border-top:0;
+      background: var(--panel2);
     }
+
     .radio{
       display:flex;
       gap:8px;
@@ -158,26 +149,101 @@
       padding:8px 10px;
       border:1px solid var(--line);
       border-radius:999px;
-      background:rgba(18,21,27,.35);
+      background: transparent;
       user-select:none;
       font-size:13px;
       color:var(--muted);
     }
-    .radio input{accent-color: var(--accent)}
-    .radio b{color:var(--text); font-weight:600}
+    .radio input{ accent-color: #0ea5e9; } /* neutral blue */
+    .radio b{ color:var(--text); font-weight:600 }
+
+    .cardInner{
+      padding:14px;
+    }
+
+    .cardHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--line);
+    }
+    .label{
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.35px;
+      text-transform:uppercase;
+    }
+
+    .tools{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+
+    button{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background: var(--btn);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:13px;
+    }
+    button:hover{ background: var(--btnHover); }
+    button:active{ transform: translateY(1px); }
+
+    .btnPrimary{
+      border-color: var(--line);
+    }
+    .btnDanger{
+      border-color: #8b2635;
+      background: rgba(139,38,53,.18);
+    }
+    [data-theme="light"] .btnDanger{
+      background: rgba(220,38,38,.10);
+      border-color: rgba(220,38,38,.35);
+    }
+
+    textarea{
+      width:100%;
+      min-height:340px;
+      resize:vertical;
+      border:none;
+      outline:none;
+      padding:14px;
+      background: transparent;
+      color:var(--text);
+      font-family: var(--mono);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .foot{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px 14px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+    }
+
     .hint{
       color:var(--muted);
       font-size:12px;
       padding:0 14px 14px;
       line-height:1.35;
     }
+
     .toast{
       position:fixed;
       right:14px;
       bottom:14px;
       padding:10px 12px;
       border-radius:12px;
-      background: rgba(18,21,27,.95);
+      background: var(--panel);
       border:1px solid var(--line);
       color:var(--text);
       font-size:13px;
@@ -187,10 +253,11 @@
       transition: .18s ease;
       pointer-events:none;
     }
-    .toast.show{opacity:1; transform: translateY(0)}
-    .toast small{color:var(--muted)}
+    .toast.show{ opacity:1; transform: translateY(0); }
+    .toast small{ color:var(--muted); }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="top">
@@ -201,7 +268,14 @@
           Підтримує видалення старих обгорток (<span style="font-family:var(--mono)">"..."</span>, <span style="font-family:var(--mono)">[...]</span>, <span style="font-family:var(--mono)">+слово</span>) і мінус-слова (<span style="font-family:var(--mono)">-</span>).
         </div>
       </div>
-      <div class="pill">Black UI • 1 файл • GitHub Pages</div>
+
+      <div class="toggle" id="themeToggle" role="button" tabindex="0" aria-label="Toggle theme">
+        <span>Темна</span>
+        <div class="switch" aria-hidden="true">
+          <div class="knob"></div>
+        </div>
+        <span>Світла</span>
+      </div>
     </div>
 
     <div class="card">
@@ -231,6 +305,7 @@
               <button class="btnDanger" id="btnClear" type="button">Очистити</button>
             </div>
           </div>
+
           <textarea id="input" spellcheck="false" placeholder="Наприклад:
 купити будинок
 &quot;модульний будинок&quot;
@@ -238,6 +313,7 @@
 +будівництво +будинків
 - &quot;безкоштовно&quot;
 -[зразок]"></textarea>
+
           <div class="foot">
             <div>Рядків: <span id="inCount">0</span></div>
             <div><span id="modeLabel">Фразове</span></div>
@@ -248,10 +324,12 @@
           <div class="cardHead">
             <div class="label">Вихід (готовий список)</div>
             <div class="tools">
-              <button class="btnAccent" id="btnCopy" type="button">Скопіювати</button>
+              <button class="btnPrimary" id="btnCopy" type="button">Скопіювати</button>
             </div>
           </div>
+
           <textarea id="output" spellcheck="false" readonly></textarea>
+
           <div class="foot">
             <div>Рядків: <span id="outCount">0</span></div>
             <div><span style="color:var(--muted)">Нормалізація пробілів • Зберігає “-”</span></div>
@@ -260,128 +338,155 @@
       </div>
 
       <div class="hint">
-        Логіка: знімаємо старі обгортки (<span style="font-family:var(--mono)">" "</span>, <span style="font-family:var(--mono)">[ ]</span>), прибираємо <span style="font-family:var(--mono)">+</span> у BMM, стискаємо пробіли → застосовуємо обраний тип.
+        Логіка: знімаємо старі обгортки (<span style="font-family:var(--mono)">" "</span>, <span style="font-family:var(--mono)">[ ]</span>),
+        прибираємо <span style="font-family:var(--mono)">+</span> у BMM, стискаємо пробіли → застосовуємо обраний тип.
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"></div>
 
-<script>
-(function(){
-  const $ = (s) => document.querySelector(s);
+  <script>
+  (function(){
+    const $ = (s) => document.querySelector(s);
 
-  const input = $("#input");
-  const output = $("#output");
-  const inCount = $("#inCount");
-  const outCount = $("#outCount");
-  const modeLabel = $("#modeLabel");
-  const toast = $("#toast");
+    const input = $("#input");
+    const output = $("#output");
+    const inCount = $("#inCount");
+    const outCount = $("#outCount");
+    const modeLabel = $("#modeLabel");
+    const toast = $("#toast");
 
-  function showToast(text, sub){
-    toast.innerHTML = sub ? `${text}<br><small>${sub}</small>` : text;
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"), 1600);
-  }
+    const themeToggle = $("#themeToggle");
+    const THEME_KEY = "mtc_theme";
 
-  function getMode(){
-    const checked = document.querySelector('input[name="mt"]:checked');
-    return checked ? checked.value : "phrase";
-  }
-
-  function stripMatchSyntax(s){
-    // trim, remove wrapping quotes/brackets, remove + before words, normalize spaces
-    s = (s || "").trim();
-    if (!s) return "";
-
-    // Remove wrapping quotes "..."
-    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith('“') && s.endsWith('”'))) {
-      s = s.slice(1, -1).trim();
+    function showToast(text, sub){
+      toast.innerHTML = sub ? `${text}<br><small>${sub}</small>` : text;
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"), 1400);
     }
 
-    // Remove wrapping brackets [...]
-    if (s.startsWith('[') && s.endsWith(']')) {
-      s = s.slice(1, -1).trim();
+    function setTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem(THEME_KEY, theme);
     }
 
-    // Remove + (broad match modifier legacy)
-    // +word -> word, keep punctuation around
-    s = s.replace(/(^|\s)\+(\S)/g, "$1$2");
-
-    // Normalize whitespace
-    s = s.replace(/\s+/g, " ").trim();
-    return s;
-  }
-
-  function convertLine(line, mode){
-    let s = (line || "").trim();
-    if (!s) return "";
-
-    // detect negative
-    let isNeg = false;
-    if (s.startsWith("-")) {
-      isNeg = true;
-      s = s.replace(/^\-\s*/, ""); // remove leading '-' and spaces
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === "light" || saved === "dark") {
+        setTheme(saved);
+        return;
+      }
+      // default: dark
+      setTheme("dark");
     }
 
-    // clean old match type syntax
-    const base = stripMatchSyntax(s);
-    if (!base) return ""; // if empty after cleaning, skip
-
-    let out;
-    if (mode === "exact") out = `[${base}]`;
-    else if (mode === "broad") out = `${base}`;
-    else out = `"${base}"`; // phrase default
-
-    if (isNeg) out = `-${out}`;
-    return out;
-  }
-
-  function recompute(){
-    const mode = getMode();
-    modeLabel.textContent = mode === "exact" ? "Точне" : (mode === "broad" ? "Широке" : "Фразове");
-
-    const lines = (input.value || "").split(/\r?\n/);
-    const converted = [];
-    let nonEmptyIn = 0;
-
-    for (const raw of lines){
-      if (raw.trim()) nonEmptyIn++;
-      const c = convertLine(raw, mode);
-      if (c) converted.push(c);
+    function toggleTheme(){
+      const cur = document.documentElement.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
     }
 
-    output.value = converted.join("\n");
-    inCount.textContent = String(nonEmptyIn);
-    outCount.textContent = String(converted.length);
-  }
+    themeToggle.addEventListener("click", toggleTheme);
+    themeToggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleTheme();
+      }
+    });
 
-  // events
-  input.addEventListener("input", recompute);
-  document.querySelectorAll('input[name="mt"]').forEach(r => r.addEventListener("change", recompute));
+    function getMode(){
+      const checked = document.querySelector('input[name="mt"]:checked');
+      return checked ? checked.value : "phrase";
+    }
 
-  $("#btnClear").addEventListener("click", () => {
-    input.value = "";
+    function stripMatchSyntax(s){
+      s = (s || "").trim();
+      if (!s) return "";
+
+      // remove wrapping quotes "..." or “...”
+      if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith('“') && s.endsWith('”'))) {
+        s = s.slice(1, -1).trim();
+      }
+
+      // remove wrapping brackets [...]
+      if (s.startsWith('[') && s.endsWith(']')) {
+        s = s.slice(1, -1).trim();
+      }
+
+      // remove + before words (BMM legacy)
+      s = s.replace(/(^|\s)\+(\S)/g, "$1$2");
+
+      // normalize whitespace
+      s = s.replace(/\s+/g, " ").trim();
+      return s;
+    }
+
+    function convertLine(line, mode){
+      let s = (line || "").trim();
+      if (!s) return "";
+
+      // negative?
+      let isNeg = false;
+      if (s.startsWith("-")) {
+        isNeg = true;
+        s = s.replace(/^\-\s*/, "");
+      }
+
+      const base = stripMatchSyntax(s);
+      if (!base) return "";
+
+      let out;
+      if (mode === "exact") out = `[${base}]`;
+      else if (mode === "broad") out = `${base}`;
+      else out = `"${base}"`;
+
+      if (isNeg) out = `-${out}`;
+      return out;
+    }
+
+    function recompute(){
+      const mode = getMode();
+      modeLabel.textContent = mode === "exact" ? "Точне" : (mode === "broad" ? "Широке" : "Фразове");
+
+      const lines = (input.value || "").split(/\r?\n/);
+      const converted = [];
+      let nonEmptyIn = 0;
+
+      for (const raw of lines){
+        if (raw.trim()) nonEmptyIn++;
+        const c = convertLine(raw, mode);
+        if (c) converted.push(c);
+      }
+
+      output.value = converted.join("\n");
+      inCount.textContent = String(nonEmptyIn);
+      outCount.textContent = String(converted.length);
+    }
+
+    input.addEventListener("input", recompute);
+    document.querySelectorAll('input[name="mt"]').forEach(r => r.addEventListener("change", recompute));
+
+    $("#btnClear").addEventListener("click", () => {
+      input.value = "";
+      recompute();
+      showToast("Очищено");
+    });
+
+    $("#btnCopy").addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(output.value || "");
+        showToast("Скопійовано", `${outCount.textContent} рядків`);
+      }catch(e){
+        output.focus();
+        output.select();
+        const ok = document.execCommand("copy");
+        showToast(ok ? "Скопійовано" : "Не вдалося скопіювати");
+      }
+    });
+
+    initTheme();
     recompute();
-    showToast("Очищено");
-  });
-
-  $("#btnCopy").addEventListener("click", async () => {
-    try{
-      await navigator.clipboard.writeText(output.value || "");
-      showToast("Скопійовано", `${outCount.textContent} рядків`);
-    }catch(e){
-      // fallback
-      output.focus();
-      output.select();
-      const ok = document.execCommand("copy");
-      showToast(ok ? "Скопійовано" : "Не вдалося скопіювати");
-    }
-  });
-
-  // init
-  recompute();
-})();
-</script>
+  })();
+  </script>
 </body>
 </html>
