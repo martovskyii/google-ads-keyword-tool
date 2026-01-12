@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Match Types Converter (Google Ads)</title>
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --card:#12151b;
+      --card2:#0f1318;
+      --text:#e8eef6;
+      --muted:#9aa7b6;
+      --line:#243042;
+      --accent:#6aa6ff;
+      --accent2:#7cf0c6;
+      --danger:#ff6a6a;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 20% -10%, rgba(106,166,255,.18), transparent 55%),
+                  radial-gradient(900px 700px at 100% 10%, rgba(124,240,198,.14), transparent 45%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:28px 16px 40px;
+    }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+    h1{
+      font-size:22px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin-top:8px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+      max-width:720px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(18,21,27,.55);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .top{flex-direction:column}
+      .pill{width:fit-content}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(18,21,27,.92), rgba(15,19,24,.92));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .cardHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(36,48,66,.6);
+    }
+    .label{
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.35px;
+      text-transform:uppercase;
+    }
+    .tools{
+      display:flex;
+      gap:8px;
+      align-items:center;
+    }
+    button{
+      cursor:pointer;
+      border:1px solid var(--line);
+      background:rgba(18,21,27,.65);
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:13px;
+    }
+    button:hover{border-color: rgba(106,166,255,.65)}
+    button:active{transform: translateY(1px)}
+    .btnAccent{
+      border-color: rgba(106,166,255,.55);
+      background: rgba(106,166,255,.15);
+    }
+    .btnDanger{
+      border-color: rgba(255,106,106,.55);
+      background: rgba(255,106,106,.14);
+    }
+    textarea{
+      width:100%;
+      min-height:340px;
+      resize:vertical;
+      border:none;
+      outline:none;
+      padding:14px;
+      background:transparent;
+      color:var(--text);
+      font-family: var(--mono);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .foot{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px 14px;
+      border-top:1px solid rgba(36,48,66,.6);
+      color:var(--muted);
+      font-size:12px;
+    }
+    .selectors{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      padding:10px 14px;
+      border-top:1px solid rgba(36,48,66,.6);
+      background: rgba(15,19,24,.35);
+    }
+    .radio{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(18,21,27,.35);
+      user-select:none;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .radio input{accent-color: var(--accent)}
+    .radio b{color:var(--text); font-weight:600}
+    .hint{
+      color:var(--muted);
+      font-size:12px;
+      padding:0 14px 14px;
+      line-height:1.35;
+    }
+    .toast{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      padding:10px 12px;
+      border-radius:12px;
+      background: rgba(18,21,27,.95);
+      border:1px solid var(--line);
+      color:var(--text);
+      font-size:13px;
+      box-shadow: var(--shadow);
+      opacity:0;
+      transform: translateY(10px);
+      transition: .18s ease;
+      pointer-events:none;
+    }
+    .toast.show{opacity:1; transform: translateY(0)}
+    .toast small{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Конвертер типів відповідності Google Ads</h1>
+        <div class="sub">
+          Встав ключові слова (кожне з нового рядка) → обери тип відповідності → скопіюй результат.
+          Підтримує видалення старих обгорток (<span style="font-family:var(--mono)">"..."</span>, <span style="font-family:var(--mono)">[...]</span>, <span style="font-family:var(--mono)">+слово</span>) і мінус-слова (<span style="font-family:var(--mono)">-</span>).
+        </div>
+      </div>
+      <div class="pill">Black UI • 1 файл • GitHub Pages</div>
+    </div>
+
+    <div class="card">
+      <div class="selectors">
+        <label class="radio">
+          <input type="radio" name="mt" value="phrase" checked>
+          <b>Фразове</b>
+          <span>( "keyword" )</span>
+        </label>
+        <label class="radio">
+          <input type="radio" name="mt" value="exact">
+          <b>Точне</b>
+          <span>( [keyword] )</span>
+        </label>
+        <label class="radio">
+          <input type="radio" name="mt" value="broad">
+          <b>Широке</b>
+          <span>( keyword )</span>
+        </label>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="cardHead">
+            <div class="label">Вхід (встав сюди)</div>
+            <div class="tools">
+              <button class="btnDanger" id="btnClear" type="button">Очистити</button>
+            </div>
+          </div>
+          <textarea id="input" spellcheck="false" placeholder="Наприклад:
+купити будинок
+&quot;модульний будинок&quot;
+[дім під ключ]
++будівництво +будинків
+- &quot;безкоштовно&quot;
+-[зразок]"></textarea>
+          <div class="foot">
+            <div>Рядків: <span id="inCount">0</span></div>
+            <div><span id="modeLabel">Фразове</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardHead">
+            <div class="label">Вихід (готовий список)</div>
+            <div class="tools">
+              <button class="btnAccent" id="btnCopy" type="button">Скопіювати</button>
+            </div>
+          </div>
+          <textarea id="output" spellcheck="false" readonly></textarea>
+          <div class="foot">
+            <div>Рядків: <span id="outCount">0</span></div>
+            <div><span style="color:var(--muted)">Нормалізація пробілів • Зберігає “-”</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint">
+        Логіка: знімаємо старі обгортки (<span style="font-family:var(--mono)">" "</span>, <span style="font-family:var(--mono)">[ ]</span>), прибираємо <span style="font-family:var(--mono)">+</span> у BMM, стискаємо пробіли → застосовуємо обраний тип.
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const $ = (s) => document.querySelector(s);
+
+  const input = $("#input");
+  const output = $("#output");
+  const inCount = $("#inCount");
+  const outCount = $("#outCount");
+  const modeLabel = $("#modeLabel");
+  const toast = $("#toast");
+
+  function showToast(text, sub){
+    toast.innerHTML = sub ? `${text}<br><small>${sub}</small>` : text;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 1600);
+  }
+
+  function getMode(){
+    const checked = document.querySelector('input[name="mt"]:checked');
+    return checked ? checked.value : "phrase";
+  }
+
+  function stripMatchSyntax(s){
+    // trim, remove wrapping quotes/brackets, remove + before words, normalize spaces
+    s = (s || "").trim();
+    if (!s) return "";
+
+    // Remove wrapping quotes "..."
+    if ((s.startsWith('"') && s.endsWith('"')) || (s.startsWith('“') && s.endsWith('”'))) {
+      s = s.slice(1, -1).trim();
+    }
+
+    // Remove wrapping brackets [...]
+    if (s.startsWith('[') && s.endsWith(']')) {
+      s = s.slice(1, -1).trim();
+    }
+
+    // Remove + (broad match modifier legacy)
+    // +word -> word, keep punctuation around
+    s = s.replace(/(^|\s)\+(\S)/g, "$1$2");
+
+    // Normalize whitespace
+    s = s.replace(/\s+/g, " ").trim();
+    return s;
+  }
+
+  function convertLine(line, mode){
+    let s = (line || "").trim();
+    if (!s) return "";
+
+    // detect negative
+    let isNeg = false;
+    if (s.startsWith("-")) {
+      isNeg = true;
+      s = s.replace(/^\-\s*/, ""); // remove leading '-' and spaces
+    }
+
+    // clean old match type syntax
+    const base = stripMatchSyntax(s);
+    if (!base) return ""; // if empty after cleaning, skip
+
+    let out;
+    if (mode === "exact") out = `[${base}]`;
+    else if (mode === "broad") out = `${base}`;
+    else out = `"${base}"`; // phrase default
+
+    if (isNeg) out = `-${out}`;
+    return out;
+  }
+
+  function recompute(){
+    const mode = getMode();
+    modeLabel.textContent = mode === "exact" ? "Точне" : (mode === "broad" ? "Широке" : "Фразове");
+
+    const lines = (input.value || "").split(/\r?\n/);
+    const converted = [];
+    let nonEmptyIn = 0;
+
+    for (const raw of lines){
+      if (raw.trim()) nonEmptyIn++;
+      const c = convertLine(raw, mode);
+      if (c) converted.push(c);
+    }
+
+    output.value = converted.join("\n");
+    inCount.textContent = String(nonEmptyIn);
+    outCount.textContent = String(converted.length);
+  }
+
+  // events
+  input.addEventListener("input", recompute);
+  document.querySelectorAll('input[name="mt"]').forEach(r => r.addEventListener("change", recompute));
+
+  $("#btnClear").addEventListener("click", () => {
+    input.value = "";
+    recompute();
+    showToast("Очищено");
+  });
+
+  $("#btnCopy").addEventListener("click", async () => {
+    try{
+      await navigator.clipboard.writeText(output.value || "");
+      showToast("Скопійовано", `${outCount.textContent} рядків`);
+    }catch(e){
+      // fallback
+      output.focus();
+      output.select();
+      const ok = document.execCommand("copy");
+      showToast(ok ? "Скопійовано" : "Не вдалося скопіювати");
+    }
+  });
+
+  // init
+  recompute();
+})();
+</script>
+</body>
+</html>
